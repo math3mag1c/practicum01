@@ -23,7 +23,7 @@ public class PersonReader {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
                 System.out.printf("%-10s %-13s %-13s %-8s %-4s%n", "ID#", "Firstname", "Lastname", "Title", "YOB");
-                System.out.println("===============================================================");
+                System.out.println("====================================================");
 
                 ArrayList<String[]> records = new ArrayList<>();
                 String line;

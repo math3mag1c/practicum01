@@ -19,16 +19,31 @@ public class PersonGenerator {
     public static void main(String[] args) {
         boolean done = false;
         ArrayList<String> records = new ArrayList<>();
-        while (!done) {
-            records.add(SafeInput.getRegExString(new Scanner(System.in), "Please input your data as \"ID (6-digit String), firstName, lastName, Title(String), YearOfBirth(4-digit int)\"", "(\\d{6}, [^,]+, [^,]+, [^,]+, \\d{4})"));
+        do {
+            String dataEntry = "";
+            dataEntry += SafeInput.getNonZeroLenString(new Scanner(System.in), "Please input your ID");
+            dataEntry += ", " + SafeInput.getNonZeroLenString(new Scanner(System.in), "Please input your first name");
+            dataEntry += ", " + SafeInput.getNonZeroLenString(new Scanner(System.in), "Please input your last name");
+            dataEntry += ", " + SafeInput.getNonZeroLenString(new Scanner(System.in), "Please input your title");
+            dataEntry += ", " + SafeInput.getRangedInt(new Scanner(System.in), "Please input your birth year", 1000, 9999);
+            records.add(dataEntry);
             done = SafeInput.getYNConfirm((new Scanner(System.in)), "Are you done inputting data? Please enter Y/y for yes and n/N for no");
-        }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("PersonTestData.txt"))) {
+        } while (!done);
+
+        File workingDirectory = new File(System.getProperty("user.dir"));
+        Path file = Paths.get(workingDirectory.getPath() + "\\src\\PersonTestData.txt");
+
+        try {
+            OutputStream out = new BufferedOutputStream(Files.newOutputStream(file, CREATE));
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
+
             for (String line: records) {
                 writer.write(line);
                 writer.newLine();
             }
+            writer.close();
             System.out.println("Your file has been written!");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
